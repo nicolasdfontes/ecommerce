@@ -31,7 +31,7 @@
       </div>
       <!-- /.login-logo -->
       <div class="login-box-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">Faça o login para começar a sua sessão</p>
         <form action="/admin/login" method="post">
           <div class="form-group has-feedback">
             <input type="text" class="form-control" placeholder="Login" name="login">
@@ -45,27 +45,25 @@
             <div class="col-xs-8">
               <div class="checkbox icheck">
                 <label>
-                  <input type="checkbox"> Remember Me
+                  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="checkbox"> Lembre-se de mim
                 </label>
               </div>
             </div>
             <!-- /.col -->
             <div class="col-xs-4">
-              <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block btn-flat">Login</button>
             </div>
             <!-- /.col -->
           </div>
         </form>
         <div class="social-auth-links text-center">
           <p>- OR -</p>
-          <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-            Facebook</a>
-          <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-            Google</a>
+          <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i>Login usando Facebook</a>
+          <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i>Login usando Google</a>
         </div>
         <!-- /.social-auth-links -->
-        <a href="#">I forgot my password</a><br>
-        <a href="register.html" class="text-center">Register a new membership</a>
+        <a href="/admin/forgot">Esqueci minha senha</a><br>
+        <a href="#" class="text-center">Registrar-se</a><!--href="register.html"-->
       </div>
       <!-- /.login-box-body -->
     </div>
