@@ -10,8 +10,8 @@ class Mailer{
 	private $mail;
 	public function __construct($toAddress, $toName, $subject, $tplName, $data=array()){
 		$config=array(
-		    "tpl_dir"=>$_SERVER['DOCUMENT_ROOT']."/views/email/",
-		    "cache_dir"=>$_SERVER['DOCUMENT_ROOT']."/views-cache/",
+		    "tpl_dir"=>$_SERVER["DOCUMENT_ROOT"]."/views/email/",
+		    "cache_dir"=>$_SERVER["DOCUMENT_ROOT"]."/views-cache/",
 		    "debug"=>false
 		);
 		Tpl::configure($config);
@@ -31,16 +31,16 @@ class Mailer{
 		$this->mail->SMTPDebug=0;
 
 		//Set the hostname of the mail server
-		$this->mail->Host='smtp.gmail.com';
+		$this->mail->Host="smtp.outlook.com";
 		// use
-		// $this->mail->Host = gethostbyname('smtp.gmail.com');
+		// $this->mail->Host = gethostbyname("smtp.gmail.com");
 		// if your network does not support SMTP over IPv6
 
 		//Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
 		$this->mail->Port=587;
 
 		//Set the encryption system to use - ssl (deprecated) or tls
-		$this->mail->SMTPSecure='tls';
+		$this->mail->SMTPSecure="tls";
 
 		//Whether to use SMTP authentication
 		$this->mail->SMTPAuth=true;
@@ -55,7 +55,7 @@ class Mailer{
 		$this->mail->setFrom(Mailer::USERNAME, Mailer::NAME_FROM);
 
 		//Set an alternative reply-to address
-		#$this->mail->addReplyTo('replyto@example.com', 'First Last');
+		#$this->mail->addReplyTo("replyto@example.com", "First Last");
 
 		//Set who the message is to be sent to
 		$this->mail->addAddress($toAddress, $toName);
@@ -68,10 +68,10 @@ class Mailer{
 		$this->mail->msgHTML($html);
 
 		//Replace the plain text body with one created manually
-		$this->mail->AltBody='This is a plain-text message body';
+		$this->mail->AltBody="This is a plain-text message body";
 
 		//Attach an image file
-		#$this->mail->addAttachment('images/phpmailer_mini.png');
+		#$this->mail->addAttachment("images/phpmailer_mini.png");
 	}
 	public function send(){
 		return $this->mail->send();

@@ -86,9 +86,9 @@ class User extends Model{
 				//$dataRecovery=$r2[0];
 				$code=base64_encode(openssl_encrypt($r2[0]["idrecovery"], "AES-128-CBC", pack("a16", User::SECRET), 0, pack("a16", User::SECRET_IV)));
 				// if ($inadmin === true){
-				$link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$code";
+				$link = "http://www.hcodecommerce.com.br:8080/admin/forgot/reset?code=$code";
 				// }else{
-				// 	$link = "http://www.hcodecommerce.com.br/forgot/reset?code=$code";		
+				// 	$link = "http://www.hcodecommerce.com.br:8080/forgot/reset?code=$code";		
 				// }				
 				$mailer=new Mailer($r[0]["desemail"], $r[0]["desperson"], "Redefinir senha da Hcode store", "forgot", array("name"=>$r[0]["desperson"], "link"=>$link));				
 				$mailer->send();
@@ -104,7 +104,7 @@ class User extends Model{
 		if (count($r)===0){throw new \Exception("Não foi possível recuperar a senha.");}
 		else{return $r[0];}
 	}
-	public static function setFogotUsed($idrecovery){
+	public static function setForgotUsed($idrecovery){
 		$sql = new Sql();
 		$sql->query("UPDATE tb_userspasswordsrecoveries SET dtrecovery = NOW() WHERE idrecovery=:idrecovery", array(":idrecovery"=>$idrecovery));
 	}
