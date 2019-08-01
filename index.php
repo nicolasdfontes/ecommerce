@@ -130,8 +130,7 @@ $app->post("/admin/categories/create", function() {
 $app->get("/admin/categories/:idcategory/delete", function($idcategory) {
 	User::verifyLogin();
 	$category=new Category();
-	$category->get((int)$idcategory);
-	$category->delete();
+	$category->delete($idcategory);
 	header("Location: /admin/categories");
 	exit;
 });
@@ -150,6 +149,12 @@ $app->post("/admin/categories/:idcategory", function($idcategory) {
 	$category->save();
 	header("Location: /admin/categories");
 	exit;
+});
+$app->get("/categories/:idcategory", function($idcategory) {
+	$category=new Category();
+	$category->get((int)$idcategory);
+	$page=new Page();
+	$page->setTpl("category",["category"=>$category->getValues(), "products"=>[]]);
 });
 $app->run();
 ?>
