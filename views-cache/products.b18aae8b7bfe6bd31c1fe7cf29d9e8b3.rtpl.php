@@ -4,7 +4,7 @@
   <section class="content-header">
     <h1>Lista de Produtos</h1>
     <ol class="breadcrumb">
-      <li><a href="/admin"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li><a href="/admin"><i class="fa fa-dashboard"></i>Home</a></li>
       <li class="active"><a href="/admin/products">Produtos</a></li>
     </ol>
   </section>
@@ -21,7 +21,7 @@
               <thead>
                 <tr>
                   <th style="width: 10px">#</th>
-                  <th>Nome da Produto</th>
+                  <th>Nome do Produto</th>
                   <th>Preço</th>
                   <th>Largura</th>
                   <th>Altura</th>
