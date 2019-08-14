@@ -17,7 +17,7 @@ class Page {
 		$config=array(
 		    //"base_url"=>null,
 		    "tpl_dir"=>$_SERVER['DOCUMENT_ROOT'].$tpl_dir,
-		    "cache_dir"=> $_SERVER['DOCUMENT_ROOT']."/views-cache/",
+		    "cache_dir"=>$_SERVER['DOCUMENT_ROOT']."/views-cache/",
 		    "debug"=>false
 		);
 		Tpl::configure($config);
@@ -36,7 +36,7 @@ class Page {
 		}
 	}*/
 	public function setTpl($name, $data=array(), $returnHTML=false){
-		foreach($data as $key => $value){$this->tpl->assign($key, $value);}
+		foreach($data as $key=>$value){$this->tpl->assign($key, $value);}
 		return $this->tpl->draw($name, $returnHTML);
 	}
 }
