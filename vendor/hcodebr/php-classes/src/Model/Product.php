@@ -66,7 +66,7 @@ class Product extends Model{
 		}
 		imagejpeg($img, $_SERVER["DOCUMENT_ROOT"].DIRECTORY_SEPARATOR."res".DIRECTORY_SEPARATOR."site".DIRECTORY_SEPARATOR."img".DIRECTORY_SEPARATOR."products".DIRECTORY_SEPARATOR.$this->getidproduct().".jpg");
 		imagedestroy($img);
-		$this->checkPhoto();
+		$this->setdesphoto("/res/site/img/products/".$this->getidproduct().".jpg");
 	}
 }
 ?>

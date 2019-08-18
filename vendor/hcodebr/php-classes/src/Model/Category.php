@@ -37,11 +37,23 @@ class Category extends Model {
 		$sql=new Sql();
 		if ($related===true) {
 			return $sql->select("SELECT * FROM tb_products WHERE idproduct IN(SELECT p.idproduct FROM tb_products p
-				INNER JOIN tb_productscategories pc ON p.idproduct=pc.idproduct WHERE pc.idcategory=:idcategory);",[":idcategory"=>$idcategory]);
+				INNER JOIN tb_productscategories pc ON p.idproduct=pc.idproduct WHERE pc.idcategory=:idcategory);", [":idcategory"=>$idcategory]);
 		} else {
 			return $sql->select("SELECT * FROM tb_products WHERE idproduct NOT IN(SELECT p.idproduct FROM tb_products p
-				INNER JOIN tb_productscategories pc ON p.idproduct=pc.idproduct WHERE pc.idcategory=:idcategory);",[":idcategory"=>$idcategory]);
+				INNER JOIN tb_productscategories pc ON p.idproduct=pc.idproduct WHERE pc.idcategory=:idcategory);", [":idcategory"=>$idcategory]);
 		}
+	}
+	public function getProductsPage($idcategory, $pages=1, $itemsPPage=8) {
+		$start=($pages-1)*$itemsPPage;
+		$sql=new Sql();
+		$r=$sql->select("SELECT SQL_CALC_FOUND_ROWS * FROM tb_products p
+			INNER JOIN tb_productscategories pc ON p.idproduct=pc.idproduct
+			INNER JOIN tb_categories c ON c.idcategory=pc.idcategory
+			WHERE c.idcategory=:idcategory LIMIT $start, $itemsPPage;", [":idcategory"=>$idcategory]);
+		$rows=$sql->select("SELECT FOUND_ROWS() AS rows;");
+		return ["data"=>Product::checkList($r),
+				"total"=>(int)$rows[0]["rows"],
+				"pages"=>ceil($rows[0]["rows"]/$itemsPPage)];
 	}
 	public function addProduct($idcategory, $idproduct) {
 		$sql=new Sql();
