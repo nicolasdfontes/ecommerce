@@ -18,9 +18,16 @@ $app->get("/categories/:idcategory", function($idcategory) {
 		array_push($pages, ["link"=>"/categories/$idcategory", "page"=>$i]);
 	}
 	$page=new Page();
-	$page->setTpl("category",["category"=>$category->getValues(),
+	$page->setTpl("category",[
+		"category"=>$category->getValues(),
 		"products"=>$pagination["data"],
 		"page"=>$pages
 	]);
+});
+$app->get("/products/:desurl", function($desurl) {
+	$product=new Product();
+	$product->getFromURL($desurl);
+	$page=new Page();
+	$page->setTpl("product-detail",["product"=>$product->getValues(), "categories"=>$product->getCategories()]);
 });
 ?>

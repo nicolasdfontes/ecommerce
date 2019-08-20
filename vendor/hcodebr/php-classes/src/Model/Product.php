@@ -68,5 +68,14 @@ class Product extends Model{
 		imagedestroy($img);
 		$this->setdesphoto("/res/site/img/products/".$this->getidproduct().".jpg");
 	}
+	public function getFromURL($desurl){
+		$sql=new Sql();
+		$r=$sql->select("SELECT * FROM tb_products WHERE desurl=:desurl", [":desurl"=>$desurl]);
+		$this->setData($r[0]);
+	}
+	public function getCategories(){
+		$sql=new Sql();
+		return $sql->select("SELECT * FROM tb_categories c INNER JOIN tb_productscategories pc ON c.idcategory=pc.idcategory WHERE pc.idproduct=:idproduct", [":idproduct"=>$this->getidproduct()]);
+	}
 }
 ?>
