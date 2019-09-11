@@ -6,11 +6,26 @@ use \Hcode\Model;
 use \Hcode\Mailer;
 
 class User extends Model{
-	const SESSION="User";
 	const SECRET="HcodePhp7_Secret";
 	const SECRET_IV="HcodePhp7_Secret_IV";
-	//protected $fields = ["iduser", "idperson", "deslogin", "despassword", "inadmin", "dtergister"];
+	//protected $fields=["iduser", "idperson", "deslogin", "despassword", "inadmin", "dtergister"];
 
+	public static function getFromSession(){
+		$user=new User();
+        if (isset($_SESSION["User"])&&(int)$_SESSION["User"]["iduser"]>0){$user->setData($_SESSION["User"]);}
+		return $user;
+	}
+	public static function checkLogin($inadmin=true){
+		if (!isset($_SESSION["User"])||!$_SESSION["User"]||!(int)$_SESSION["User"]["iduser"]>0){
+			return false;
+		}elseif ((bool)$_SESSION["User"]["inadmin"]===true){
+			return true;
+		}elseif ($inadmin===false){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	public static function login($login, $password)/*:User*/{
 		$sql = new Sql();
 		$r=$sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN",array(":LOGIN"=>$login));
@@ -18,22 +33,18 @@ class User extends Model{
 		if (password_verify($password, $r[0]["despassword"])) {
 			$user=new User();
 			$user->setData($r[0]);
-			$_SESSION[User::SESSION]=$user->getValues();
+			$_SESSION["User"]=$user->getValues();
 			return $user;
 		} else {throw new \Exception("Senha inválida.");}
 	}
-	public static function verifyLogin($inadmin=true){
-		if (
-			!isset($_SESSION[User::SESSION])|| 
-			!$_SESSION[User::SESSION]||
-			(int)$_SESSION[User::SESSION]["iduser"]<=0||
-			(bool)$_SESSION[User::SESSION]["inadmin"]!==$inadmin
-		) {
+	public static function verifyLogin(){
+		//Só admin
+		if (!User::checkLogin()){
 			header("Location: /admin/login");
 			exit;
 		}
 	}
-	public static function logout(){$_SESSION[User::SESSION] = NULL;}
+	public static function logout(){$_SESSION["User"] = NULL;}
 	public static function listAll(){
 		$sql=new Sql();
 		return $sql->select("SELECT * FROM tb_users u INNER JOIN tb_persons p USING(idperson) ORDER BY p.desperson");

@@ -1,5 +1,4 @@
 <?php if(!class_exists('Rain\Tpl')){exit;}?>    <div class="slider-area">
-        <!-- Slider -->
     	<div class="block-slider block-slider4">
     		<ul class="" id="bxslider-home4">
     			<li>
@@ -32,10 +31,8 @@
     				</div>
     			</li>
     		</ul>
-    	</div>
-    	<!-- ./Slider -->
+    	</div><!-- ./Slider -->
     </div><!-- End slider area -->
-    
     <div class="promo-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
@@ -67,7 +64,6 @@
             </div>
         </div>
     </div> <!-- End promo area -->
-    
     <div class="maincontent-area">
         <div class="zigzag-bottom"></div>
         <div class="container">

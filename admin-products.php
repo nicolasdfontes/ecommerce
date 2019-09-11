@@ -22,7 +22,6 @@ $app->post("/admin/products/create", function() {
 	header("Location: /admin/products");
 	exit;
 });
-//
 $app->get("/admin/products/:idproduct/delete", function($idproduct) {
 	User::verifyLogin();
 	$product=new Product();
