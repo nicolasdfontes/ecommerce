@@ -27,7 +27,7 @@ class Cart extends Model{
     }
 	public function save(){
         $sql=new Sql();
-		$r=$sql->select("CALL sp_categories_save(:idcart, :dessessionid, :iduser, :deszipcode, :vlfreight, :nrdays)", [
+		$r=$sql->select("CALL sp_carts_save(:idcart, :dessessionid, :iduser, :deszipcode, :vlfreight, :nrdays)", [
             ":idcart"=>$this->getidcart(),
             ":dessessionid"=>$this->getdessessionid(),
             ":iduser"=>$this->getiduser(),
