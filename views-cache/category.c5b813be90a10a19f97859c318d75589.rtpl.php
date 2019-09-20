@@ -19,9 +19,9 @@
                             <img src="/res/site/img/products/<?php echo htmlspecialchars( $value1["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>.jpg">
                         </div>
                         <h2><a href="/products/<?php echo htmlspecialchars( $value1["desurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["desproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a></h2>
-                        <div class="product-carousel-price"><ins>R$ <?php echo number_format($value1["vlprice"], 2, ",", " "); ?></ins></div>  
+                        <div class="product-carousel-price"><ins>R$<?php echo formatPrice($value1["vlprice"]); ?></ins></div>  
                         <div class="product-option-shop">
-                            <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" href="/canvas/shop/?add-to-cart=70">Comprar</a>
+                            <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" href="/cart/<?php echo htmlspecialchars( $value1["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/add">Comprar</a>
                         </div>                       
                     </div>
                 </div>

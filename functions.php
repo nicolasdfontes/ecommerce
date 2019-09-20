@@ -1,6 +1,6 @@
 <?php
-function formatPrice(float $price){
-	return number_format($price, 2, ",", " ");
+function formatPrice($price){
+	return number_format($price, 2, ",", ".");
 }
 function post($key){
 	return str_replace("'", "", $_POST[$key]);

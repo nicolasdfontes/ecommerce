@@ -17,7 +17,7 @@
 	                <div class="product-content-right">
 	                    <div class="woocommerce">
 	                        <form action="/checkout">
-	                            <div class="alert alert-danger" role="alert">Erro!</div>
+	                            <!--div class="alert alert-danger" role="alert">Erro!</div-->
 	                            <table cellspacing="0" class="shop_table cart">
 	                                <thead>
 	                                    <tr>
@@ -30,20 +30,28 @@
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
+										<?php $counter1=-1;  if( isset($products) && ( is_array($products) || $products instanceof Traversable ) && sizeof($products) ) foreach( $products as $key1 => $value1 ){ $counter1++; ?>
+
 	                                    <tr class="cart_item">
-	                                        <td class="product-remove"><a title="Remove this item" class="remove" href="#">X</a></td>
-	                                        <td class="product-thumbnail"><a href="/res/site/img/product-1.jpg"><img width="145" height="145" alt="produto" class="shop_thumbnail" src="/res/site/img/product-1.jpg"></a></td>
-	                                        <td class="product-name"><a href="#">Produto</a></td>
-	                                        <td class="product-price"><span class="amount">R$100,00</span></td>
+	                                        <td class="product-remove"><a title="Remove this item" class="remove" href="/cart/<?php echo htmlspecialchars( $value1["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/remove">X</a></td>
+	                                        <td class="product-thumbnail">
+												<a href="<?php echo htmlspecialchars( $value1["desphoto"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" target="_blank">
+													<img width="145" height="145" alt="produto" class="shop_thumbnail" src="<?php echo htmlspecialchars( $value1["desphoto"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+												</a>
+											</td>
+	                                        <td class="product-name"><a href="/products/<?php echo htmlspecialchars( $value1["desurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["desproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a></td>
+	                                        <td class="product-price"><span class="amount">R$<?php echo formatPrice($value1["vlprice"]); ?></span></td>
 	                                        <td class="product-quantity">
 	                                            <div class="quantity buttons_added">
-	                                                <input type="button" class="minus" value="-" onclick="window.location.href='#'">
-	                                                <input type="number" size="2" class="input-text qty text" title="Qty" value="1" min="1" step="1">
-	                                                <input type="button" class="plus" value="+" onclick="window.location.href='#'">
+	                                                <input type="button" class="minus" value="-" onclick="window.location.href='/cart/<?php echo htmlspecialchars( $value1["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/minus'">
+	                                                <input type="number" size="2" class="input-text qty text" title="Qty" value="<?php echo htmlspecialchars( $value1["qtd"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" min="1" step="1">
+	                                                <input type="button" class="plus" value="+" onclick="window.location.href='/cart/<?php echo htmlspecialchars( $value1["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/add'">
 	                                            </div>
 	                                        </td>
-	                                        <td class="product-subtotal"><span class="amount">R$100,00</span></td>
-	                                    </tr>
+	                                        <td class="product-subtotal"><span class="amount">R$<?php echo formatPrice($value1["vltotal"]); ?></span></td>
+										</tr>
+										<?php } ?>
+
 	                                </tbody>
 	                            </table>
 	                            <div class="cart-collaterals">
