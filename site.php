@@ -32,14 +32,19 @@ $app->get("/products/:desurl", function($desurl) {
 	$page->setTpl("product-detail",["product"=>$product->getValues(), "categories"=>$product->getCategories()]);
 });
 $app->get("/cart", function(){
+	//$_SESSION["Cart"]["dessessionid"]="8sb3hu4jvstidho1s4qgbjgnfe";
 	$cart=Cart::getFromSession();
 	$page=new Page();
-	$page->setTpl("cart",["cart"=>$cart->getValues(), "products"=>$cart->getProducts()]);
+	$page->setTpl("cart",[
+		"cart"=>$cart->getValues(),
+		"products"=>$cart->getProducts(),
+		"error"=>Cart::getMsgErro()
+	]);
 });
 $app->get("/cart/:idproduct/add", function($idproduct){
 	$cart=Cart::getFromSession();
-	$qtd=(isset($_GET["qty"])) ? (int)$_GET["qty"] : 1 ;
-	for ($i=0; $i<$qtd; $i++) { 
+	$qtd=(isset($_GET["qty"])) ? (int)$_GET["qty"] : 1;
+	for ($i=0; $i<$qtd; $i++){ 
 		$cart->addProduct($idproduct);
 	}
 	header("Location: /cart");
@@ -54,6 +59,12 @@ $app->get("/cart/:idproduct/minus", function($idproduct){
 $app->get("/cart/:idproduct/remove", function($idproduct){
 	$cart=Cart::getFromSession();
 	$cart->removeProduct($idproduct, true);
+	header("Location: /cart");
+	exit;
+});
+$app->post("/cart/freight", function(){
+	$cart=Cart::getFromSession();
+	$cart->setFreight($_POST["zipcode"]);
 	header("Location: /cart");
 	exit;
 });

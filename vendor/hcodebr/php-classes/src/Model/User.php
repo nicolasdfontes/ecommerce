@@ -89,12 +89,10 @@ class User extends Model{
 		if (count($r)===0){
 			throw new \Exception("Email não cadastrado!");
 		}else{
-			//$data=$r[0];
 			$r2=$sql->select("CALL sp_userspasswordsrecoveries_create(:iduser, :desip)", array(":iduser"=>$r[0]["iduser"], ":desip"=>$_SERVER["REMOTE_ADDR"]));
 			if (count($r2)===0){
 				throw new \Exception("Não foi possível recuperar a senha.");
 			}else{
-				//$dataRecovery=$r2[0];
 				$code=base64_encode(openssl_encrypt($r2[0]["idrecovery"], "AES-128-CBC", pack("a16", User::SECRET), 0, pack("a16", User::SECRET_IV)));
 				// if ($inadmin === true){
 				$link = "http://www.hcodecommerce.com.br:8080/admin/forgot/reset?code=$code";

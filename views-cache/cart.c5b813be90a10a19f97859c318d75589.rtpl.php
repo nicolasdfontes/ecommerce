@@ -16,8 +16,9 @@
 	            <div class="col-md-12">
 	                <div class="product-content-right">
 	                    <div class="woocommerce">
-	                        <form action="/checkout">
-	                            <!--div class="alert alert-danger" role="alert">Erro!</div-->
+							<form action="/checkout">
+								<?php if( $error!='' ){ ?><div class="alert alert-danger" role="alert"><?php echo htmlspecialchars( $error, ENT_COMPAT, 'UTF-8', FALSE ); ?></div><?php } ?>
+
 	                            <table cellspacing="0" class="shop_table cart">
 	                                <thead>
 	                                    <tr>
@@ -59,7 +60,7 @@
 	                                    <h2>Cálculo do Frete</h2>
 	                                    <div class="coupon">
 	                                        <label for="cep">CEP:</label>
-	                                        <input type="text" placeholder="00000-000" value="" id="cep" class="input-text" name="zipcode">
+	                                        <input type="text" placeholder=00000-000 id="cep" class="input-text" name="zipcode" maxlength=9>
 	                                        <input type="submit" formmethod="post" formaction="/cart/freight" value="CALCULAR" class="button">
 	                                    </div>
 	                                </div>
@@ -67,9 +68,12 @@
 	                                    <h2>Resumo da Compra</h2>
 	                                    <table cellspacing="0">
 	                                        <tbody>
-	                                            <tr class="cart-subtotal"><th>Subtotal</th> <td><span class="amount">R$100,00</span></td></tr>
-	                                            <tr class="shipping"><th>Frete</th> <td>R$5,00 <small>prazo de x dias</small></td></tr>
-	                                            <tr class="order-total"><th>Total</th> <td><strong><span class="amount">R$105,00</span></strong></td></tr>
+	                                            <tr class="cart-subtotal"><th>Subtotal</th> <td><span class="amount">R$<?php echo formatPrice($cart["vlsubtotal"]); ?></span></td></tr>
+												<tr class="shipping"><th>Frete</th> <td>R$<?php echo formatPrice($cart["vlfreight"]); ?> &nbsp;
+													<?php if( $cart["nrdays"]==1 ){ ?><small>1 dia útil</small><?php } ?>
+
+													<?php if( $cart["nrdays"]>1 ){ ?><small><?php echo htmlspecialchars( $cart["nrdays"], ENT_COMPAT, 'UTF-8', FALSE ); ?> dias úteis</small><?php } ?></td></tr>
+	                                            <tr class="order-total"><th>Total</th> <td><strong><span class="amount">R$<?php echo formatPrice($cart["vltotal"]); ?></span></strong></td></tr>
 	                                        </tbody>
 	                                    </table>
 	                                </div>
