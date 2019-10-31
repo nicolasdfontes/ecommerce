@@ -2,6 +2,7 @@
 use \Hcode\PageAdmin;
 use \Hcode\Model\User;
 
+//Home
 $app->get('/admin', function() {
 	User::verifyLogin();
 	$page=new PageAdmin();
@@ -24,7 +25,7 @@ $app->get('/admin/logout', function() {
 	exit;
 });
 
-//users
+//Users
 $app->get('/admin/users', function() {
 	User::verifyLogin();
 	$users=User::listAll();
@@ -72,7 +73,7 @@ $app->post("/admin/users/:iduser", function($iduser) {
  	exit;
 });
 
-//forgot the password
+//Forgot the password
 $app->get("/admin/forgot", function() {
 	$page=new PageAdmin(["header"=>false,"footer"=>false]);
 	$page->setTpl("forgot");

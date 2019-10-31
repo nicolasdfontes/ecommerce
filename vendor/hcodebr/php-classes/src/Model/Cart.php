@@ -8,7 +8,7 @@ use \Hcode\Model\User;
 class Cart extends Model{
     public static function getFromSession(){
         $cart=new Cart();
-        if (isset($_SESSION["Cart"])&&isset($_SESSION["Cart"]["idcart"])&&$_SESSION["Cart"]["idcart"]>0/*=3*/){
+        if (isset($_SESSION["Cart"]["idcart"])&&$_SESSION["Cart"]["idcart"]=3/*>0*/){
             $sql=new Sql();
             $r=$sql->select("SELECT * FROM tb_carts WHERE idcart=:idcart", [":idcart"=>(int)$_SESSION["Cart"]["idcart"]]);
             if (count($r)>0){$cart->setData($r[0]);}
@@ -117,7 +117,7 @@ class Cart extends Model{
     //     $_SESSION["CartError"]=$msg;
     // }
     public static function getMsgErro(){
-        $msg=(isset($_SESSION["CartError"])) ? $_SESSION["CartError"] : "" ;
+        $msg=(isset($_SESSION["CartError"])) ? $_SESSION["CartError"] : "";
         $_SESSION["CartError"]=null;
         return $msg;
     }
