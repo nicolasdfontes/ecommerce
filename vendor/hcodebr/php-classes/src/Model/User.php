@@ -125,11 +125,20 @@ class User extends Model{
 		$msg=(isset($_SESSION["UserError"])) ? $_SESSION["UserError"] : "";
 		$_SESSION["UserError"]=null; //clearError
 		return $msg;
-    }
-    //setErrorRegister
-    //getErrorRegister
-    //clearErrorRegister
-    //checkLoginExist
+	}
+	// public static function setErrorRegister($msg){
+	// 	$_SESSION["UserErrorRegister"]=$msg;
+	// }
+    public static function getErrorRegister(){
+		$msg=(isset($_SESSION["UserErrorRegister"])) ? $_SESSION["UserErrorRegister"] : "";
+		$_SESSION["UserErrorRegister"]=null; //clearErrorRegister
+		return $msg;
+	}
+	public static function checkLoginExist($login){
+		$sql=new Sql();
+		$r=$sql->select("SELECT * FROM tb_users WHERE deslogin=:deslogin",[":deslogin"=>$login]);
+		return (count($r)>0);
+	}
     public static function getPasswordHash($senha){
         return password_hash($senha, PASSWORD_DEFAULT, ['cost'=>12]);
     }

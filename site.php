@@ -82,7 +82,11 @@ $app->get("/checkout", function(){
 });
 $app->get("/login", function(){
 	$page=new Page();
-	$page->setTpl("login", ['error'=>User::getError()]);
+	$page->setTpl("login", [
+		'error'=>User::getError(),
+		'errorRegister'=>User::getErrorRegister(),
+		'regVal'=>(isset($_SESSION['regVal'])) ? $_SESSION['regVal'] : []
+		]);
 });
 $app->post("/login", function(){
 	try {
@@ -95,5 +99,41 @@ $app->post("/login", function(){
 });
 $app->get("/logout", function(){
 	User::logout();
+});
+$app->post("/register", function(){
+	$_SESSION['regVal']=$_POST;
+	if (!isset($_POST['name'])||$_POST['name']=='') {
+		$_SESSION["UserErrorRegister"]="Insira o seu nome.";
+		header("Location: /login");
+		exit;
+	}
+	if (!isset($_POST['email'])||$_POST['email']=='') {
+		$_SESSION["UserErrorRegister"]="Insira o seu e-mail.";
+		header("Location: /login");
+		exit;
+	}
+	if (!isset($_POST['senha'])||$_POST['senha']=='') {
+		$_SESSION["UserErrorRegister"]="Insira uma senha.";
+		header("Location: /login");
+		exit;
+	}
+	if (User::checkLoginExist($_POST['email'])) {
+		$_SESSION["UserErrorRegister"]="E-mail já cadastrado.";
+		header("Location: /login");
+		exit;
+	}
+	$user=new User();
+	$user->setData([
+		"inadmin"=>0,
+		"deslogin"=>$_POST['email'],
+		"desperson"=>$_POST['name'],
+		"desemail"=>$_POST['email'],
+		"despassword"=>$_POST['senha'],
+		"nrphone"=>$_POST['phone']
+	]);
+	$user->save();
+	header("Location: /checkout");
+	exit;
+	echo "OK";
 });
 ?>

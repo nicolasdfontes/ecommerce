@@ -1,4 +1,4 @@
- 
+<?php if(!class_exists('Rain\Tpl')){exit;}?> 
 <div class="product-big-title-area">
     <div class="container">
         <div class="row">
@@ -15,7 +15,8 @@
     <div class="container">
         <div class="row">                
             <div class="col-md-6">
-                {if="$error!=''"}<div class="alert alert-danger">{$error}</div>{/if}
+                <?php if( $error!='' ){ ?><div class="alert alert-danger"><?php echo htmlspecialchars( $error, ENT_COMPAT, 'UTF-8', FALSE ); ?></div><?php } ?>
+
                 <form action="/login" id="login-form-wrap" class="login" method="post">
                     <h2>Já tenho conta</h2>
                     <p class="form-row form-row-first">
@@ -36,24 +37,25 @@
                 </form>                    
             </div>
             <div class="col-md-6">
-                {if="$errorRegister!=''"}<div class="alert alert-danger">{$errorRegister}</div>{/if}
+                <?php if( $errorRegister!='' ){ ?><div class="alert alert-danger"><?php echo htmlspecialchars( $errorRegister, ENT_COMPAT, 'UTF-8', FALSE ); ?></div><?php } ?>
+
                 <form action="/register" id="register-form-wrap" class="register" method="post">
                     <h2>Criar conta</h2>
                     <p class="form-row form-row-first">
                         <label for="nome">Nome Completo <span class="required">*</span></label>
-                        <input type="text" id="nome" name="name" value="{$regVal.name}" class="input-text">
+                        <input type="text" id="nome" name="name" value="<?php echo htmlspecialchars( $regVal["name"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="input-text">
                     </p>
                     <p class="form-row form-row-first">
                         <label for="email">E-mail <span class="required">*</span></label>
-                        <input type="email" id="email" name="email" value="{$regVal.email}" class="input-text">
+                        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars( $regVal["email"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="input-text">
                     </p>
                     <p class="form-row form-row-first">
                         <label for="phone">Telefone</label>
-                        <input type="text" id="phone" name="phone" value="{$regVal.phone}" class="input-text" placeholder="(__)________" maxlength=11>
+                        <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars( $regVal["phone"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="input-text" placeholder="(__)________" maxlength=11>
                     </p>
                     <p class="form-row form-row-last">
                         <label for="senha">Senha <span class="required">*</span></label>
-                        <input type="password" id="senha" name="senha" {if="$regVal.senha==''"}value=''{else}value="{$regVal.senha}"{/if} class="input-text" minlength=6>
+                        <input type="password" id="senha" name="senha" <?php if( $regVal["senha"]=='' ){ ?>value=''<?php }else{ ?>value="<?php echo htmlspecialchars( $regVal["senha"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"<?php } ?> class="input-text" minlength=6>
                     </p>
                     <div class="clear"></div>
                     <p class="form-row"><input type="submit" value="Criar" name="login" class="button"></p>
