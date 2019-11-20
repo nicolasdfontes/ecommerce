@@ -40,7 +40,7 @@ class User extends Model{
 			$user->setData($r[0]);
 			$_SESSION["User"]=$user->getValues();
 			return $user;
-		} else {throw new \Exception("Senha inválida.");}
+		} else throw new \Exception("Senha inválida.");
 	}
 	public static function logout(){$_SESSION["User"]=NULL;}
 	public static function listAll(){
@@ -82,7 +82,7 @@ class User extends Model{
 		$sql=new sql();
 		$sql->query("CALL sp_users_delete(:iduser)", array(":iduser"=>$this->getiduser()));
 	}
-	public static function getForgot($email){
+	public static function getForgot($email, $inadmin=true){
 		$sql=new Sql();
 		$r=$sql->select("SELECT * FROM tb_persons p INNER JOIN tb_users u USING(idperson) WHERE p.desemail=:email", array(":email"=>$email));
 		if (count($r)===0) throw new \Exception("Email não cadastrado!");
@@ -91,11 +91,8 @@ class User extends Model{
 			if (count($r2)===0) throw new \Exception("Não foi possível recuperar a senha.");
 			else {
 				$code=base64_encode(openssl_encrypt($r2[0]["idrecovery"], "AES-128-CBC", pack("a16", User::SECRET), 0, pack("a16", User::SECRET_IV)));
-				// if ($inadmin === true){
-				$link = "http://www.hcodecommerce.com.br:8080/admin/forgot/reset?code=$code";
-				// }else{
-				// 	$link = "http://www.hcodecommerce.com.br:8080/forgot/reset?code=$code";		
-				// }				
+				if ($inadmin===true) $link="http://www.hcodecommerce.com.br:8080/admin/forgot/reset?code=$code";
+				else $link="http://www.hcodecommerce.com.br:8080/forgot/reset?code=$code";
 				$mailer=new Mailer($r[0]["desemail"], $r[0]["desperson"], "Redefinir senha da Hcode store", "forgot", array("name"=>$r[0]["desperson"], "link"=>$link));				
 				$mailer->send();
 				return $r[0];

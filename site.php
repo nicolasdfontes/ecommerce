@@ -33,6 +33,8 @@ $app->get("/products/:desurl", function($desurl) {
 	$page=new Page();
 	$page->setTpl("product-detail",["product"=>$product->getValues(), "categories"=>$product->getCategories()]);
 });
+
+//Cart
 $app->get("/cart", function(){
 	$_SESSION["Cart"]["dessessionid"]="8sb3hu4jvstidho1s4qgbjgnfe";
 	$cart=Cart::getFromSession();
@@ -70,6 +72,7 @@ $app->post("/cart/freight", function(){
 	header("Location: /cart");
 	exit;
 });
+
 $app->get("/checkout", function(){
 	User::verifyLogin(false);
 	$cart=Cart::getFromSession();
@@ -80,6 +83,8 @@ $app->get("/checkout", function(){
 		'address'=>$address->getValues()
 	]);
 });
+
+//Login e register
 $app->get("/login", function(){
 	$page=new Page();
 	$page->setTpl("login", [
@@ -135,5 +140,35 @@ $app->post("/register", function(){
 	header("Location: /checkout");
 	exit;
 	echo "OK";
+});
+
+//Forgot the password
+$app->get("/forgot", function() {
+	$page=new Page();
+	$page->setTpl("forgot");
+});
+$app->post("/forgot", function() {
+	User::getForgot($_POST["email"], false);
+	header("Location: /forgot/sent");
+	exit;
+});
+$app->get("/forgot/sent", function() {
+	$page=new Page();
+	$page->setTpl("forgot-sent");
+});
+$app->get("/forgot/reset", function() {
+	$user=User::validForgotDecrypt($_GET["code"]);
+	$page=new Page();
+	$page->setTpl("forgot-reset", ["name"=>$user["desperson"], "code"=>$_GET["code"]]);
+});
+$app->post("/forgot/reset", function() {
+	$forgot=User::validForgotDecrypt($_POST["code"]);
+	User::setForgotUsed($forgot["idrecovery"]);
+	$user=new User();
+	$user->get((int)$forgot["iduser"]);
+	$hash=password_hash($_POST["password"], PASSWORD_DEFAULT, ["cost"=>12]);
+	$user->setPassword($hash);
+	$page=new Page();
+	$page->setTpl("forgot-reset-success");
 });
 ?>
