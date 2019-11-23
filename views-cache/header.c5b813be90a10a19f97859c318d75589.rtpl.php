@@ -35,14 +35,14 @@
                 <div class="col-md-8">
                     <div class="user-menu">
                         <ul>
-                            <li><a href="#"><i class="fa fa-user"></i> Minha Conta</a></li>
+                            <!--li><a href="/profile"><i class="fa fa-user"></i> Minha Conta</a></li-->
                             <li><a href="#"><i class="fa fa-heart"></i> Lista de Desejos</a></li>
                             <li><a href="/cart"><i class="fa fa-shopping-cart"></i> Meu Carrinho</a></li>
                             <?php if( checkLogin() ){ ?>
                             <li><a href="/profile"><i class="fa fa-user"></i> <?php echo getUserName(); ?></a></li>
-                            <li><a href="/logout"><i class="fa fa-close"></i> Logout</a></li>
+                            <li><a href="/logout"><i class="fa fa-close"></i> Sair</a></li>
                             <?php }else{ ?>
-                            <li><a href="/login"><i class="fa fa-lock"></i> Login</a></li>
+                            <li><a href="/login"><i class="fa fa-lock"></i> Entrar</a></li>
                             <?php } ?>
                         </ul>
                     </div>
@@ -82,7 +82,7 @@
                 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="/cart">Carrinho - <span class="cart-amunt">R$100</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">1</span></a>
+                        <a href="/cart">Carrinho - <span class="cart-amunt">vazio</span> <i class="fa fa-shopping-cart"></i> <!--span class="product-count">1</span--></a>
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="/">Home</a></li>
-                        <li><a href="#">Produtos</a></li>
+                        <li><a href="/products">Produtos</a></li>
                         <li><a href="/cart">Carrinho</a></li>
                     </ul>
                 </div>  

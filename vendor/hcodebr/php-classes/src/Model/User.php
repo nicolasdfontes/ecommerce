@@ -8,7 +8,6 @@ use \Hcode\Mailer;
 class User extends Model{
 	const SECRET="HcodePhp7_Secret";
 	const SECRET_IV="HcodePhp7_Secret_IV";
-	//protected $fields=["iduser", "idperson", "deslogin", "despassword", "inadmin", "dtergister"];
 
 	public static function getFromSession(){
 		$user=new User();
@@ -19,7 +18,8 @@ class User extends Model{
 		if (!isset($_SESSION["User"])||!$_SESSION["User"]||(int)$_SESSION["User"]["iduser"]<=0){
             if ($redirect) {
                 if ($inadmin) header("Location: /admin/login");
-			    else header("Location: /login");
+				else header("Location: /login");
+				exit;
             } else return false;
 		}else{
 			if ($redirect) {
@@ -32,11 +32,11 @@ class User extends Model{
 	}
 	public static function login($login, $senha){
 		$sql = new Sql();
-		$r=$sql->select("SELECT * FROM tb_users WHERE deslogin=:LOGIN",array(":LOGIN"=>$login));
+		$r=$sql->select("SELECT * FROM tb_users u INNER JOIN tb_persons p ON u.idperson=p.idperson WHERE u.deslogin=:login", [":login"=>$login]);
 		if (count($r)===0) throw new \Exception("Login inválido.");
 		if (password_verify($senha, $r[0]["despassword"])) {
-            $user=new User();
-            $r[0]['desperson']=utf8_encode($r[0]['desperson']);
+			$user=new User();
+			$r[0]['desperson']=utf8_encode($r[0]['desperson']);
 			$user->setData($r[0]);
 			$_SESSION["User"]=$user->getValues();
 			return $user;
@@ -61,8 +61,8 @@ class User extends Model{
 	}
 	public function get($iduser){
 		$sql=new Sql();
-        $r=$sql->select("SELECT * FROM tb_users u INNER JOIN tb_persons p USING(idperson) WHERE u.iduser=:iduser", array(":iduser"=>$iduser));
-        $r[0]['desperson']=utf8_encode($r[0]['desperson']);
+		$r=$sql->select("SELECT * FROM tb_users u INNER JOIN tb_persons p USING(idperson) WHERE u.iduser=:iduser", array(":iduser"=>$iduser));
+		$r[0]['desperson']=utf8_encode($r[0]['desperson']);
 		$this->setData($r[0]);
 	}
 	public function update(){
@@ -121,6 +121,14 @@ class User extends Model{
 	public static function getError(){
 		$msg=(isset($_SESSION["UserError"])) ? $_SESSION["UserError"] : "";
 		$_SESSION["UserError"]=null; //clearError
+		return $msg;
+	}
+	// public static function setSuccess($msg){
+	// 	$_SESSION["UserSuccess"]=$msg;
+	// }
+	public static function getSuccess(){
+		$msg=(isset($_SESSION["UserSuccess"])) ? $_SESSION["UserSuccess"] : "";
+		$_SESSION["UserSuccess"]=null; //clearSuccess
 		return $msg;
 	}
 	// public static function setErrorRegister($msg){

@@ -35,7 +35,7 @@ $app->get("/products/:desurl", function($desurl) {
 });
 
 //Cart
-$app->get("/cart", function(){
+$app->get("/cart", function() {
 	$_SESSION["Cart"]["dessessionid"]="8sb3hu4jvstidho1s4qgbjgnfe";
 	$cart=Cart::getFromSession();
 	$page=new Page();
@@ -45,7 +45,7 @@ $app->get("/cart", function(){
 		"error"=>Cart::getMsgErro()
 	]);
 });
-$app->get("/cart/:idproduct/add", function($idproduct){
+$app->get("/cart/:idproduct/add", function($idproduct) {
 	$cart=Cart::getFromSession();
 	$qtd=(isset($_GET["qty"])) ? (int)$_GET["qty"] : 1;
 	for ($i=0; $i<$qtd; $i++){ 
@@ -54,26 +54,26 @@ $app->get("/cart/:idproduct/add", function($idproduct){
 	header("Location: /cart");
 	exit;
 });
-$app->get("/cart/:idproduct/minus", function($idproduct){
+$app->get("/cart/:idproduct/minus", function($idproduct) {
 	$cart=Cart::getFromSession();
 	$cart->removeProduct($idproduct);
 	header("Location: /cart");
 	exit;
 });
-$app->get("/cart/:idproduct/remove", function($idproduct){
+$app->get("/cart/:idproduct/remove", function($idproduct) {
 	$cart=Cart::getFromSession();
 	$cart->removeProduct($idproduct, true);
 	header("Location: /cart");
 	exit;
 });
-$app->post("/cart/freight", function(){
+$app->post("/cart/freight", function() {
 	$cart=Cart::getFromSession();
 	$cart->setFreight($_POST["zipcode"]);
 	header("Location: /cart");
 	exit;
 });
 
-$app->get("/checkout", function(){
+$app->get("/checkout", function() {
 	User::verifyLogin(false);
 	$cart=Cart::getFromSession();
 	$address=new Address();
@@ -85,15 +85,15 @@ $app->get("/checkout", function(){
 });
 
 //Login e register
-$app->get("/login", function(){
+$app->get("/login", function() {
 	$page=new Page();
 	$page->setTpl("login", [
 		'error'=>User::getError(),
 		'errorRegister'=>User::getErrorRegister(),
-		'regVal'=>(isset($_SESSION['regVal'])) ? $_SESSION['regVal'] : []
-		]);
+		'regVal'=>(isset($_SESSION['regVal'])) ? $_SESSION['regVal'] : ['name'=>'', 'email'=>'', 'phone'=>'', 'senha'=>'']
+	]);
 });
-$app->post("/login", function(){
+$app->post("/login", function() {
 	try {
 		User::login($_POST['login'],$_POST['senha']);
 	} catch (Exception $e) {
@@ -102,10 +102,12 @@ $app->post("/login", function(){
 	header("Location: /checkout");
 	exit;
 });
-$app->get("/logout", function(){
+$app->get("/logout", function() {
 	User::logout();
+	header("Location: /");
+	exit;
 });
-$app->post("/register", function(){
+$app->post("/register", function() {
 	$_SESSION['regVal']=$_POST;
 	if (!isset($_POST['name'])||$_POST['name']=='') {
 		$_SESSION["UserErrorRegister"]="Insira o seu nome.";
@@ -138,8 +140,7 @@ $app->post("/register", function(){
 	]);
 	$user->save();
 	header("Location: /checkout");
-	exit;
-	echo "OK";
+	exit("OK");
 });
 
 //Forgot the password
@@ -170,5 +171,37 @@ $app->post("/forgot/reset", function() {
 	$user->setPassword($hash);
 	$page=new Page();
 	$page->setTpl("forgot-reset-success");
+});
+
+//profile
+$app->get("/profile", function() {
+	User::verifyLogin(false);
+	$user=User::getFromSession();
+	$page=new Page();
+	$page->setTpl("profile", [
+		'user'=>$user->getValues(),
+		'profileMsg'=>User::getSuccess(),
+		'profileError'=>User::getError()
+	]);
+});
+$app->post("/profile", function() {
+	User::verifyLogin(false);
+	if (!isset($_POST['desperson'])||$_POST['desperson']=='') $_SESSION["UserError"]='Insira um nome';
+	elseif (!isset($_POST['desemail'])||$_POST['desemail']=='') $_SESSION["UserError"]='Insira um e-mail';
+	else{
+		$user=User::getFromSession();
+		if ($_POST['desemail']!=$user->getdesemail()&&User::checkLoginExists($_POST['desemail']))
+			$_SESSION["UserError"]='Este e-mail já está cadastrado';
+		else{
+			$_POST['inadmin']=$user->getinadmin();
+			$_POST['despassword']=$user->getdespassword();
+			$user->setData($_POST);
+			$user->update();
+			$_SESSION['User']=$user->getValues();
+			$_SESSION["UserSuccess"]='Dados alterados com sucesso';
+		}
+	}
+	header("Location: /profile");
+	exit;
 });
 ?>
