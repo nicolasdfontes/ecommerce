@@ -55,7 +55,7 @@
                     </p>
                     <p class="form-row form-row-last">
                         <label for="senha">Senha <span class="required">*</span></label>
-                        <input type="password" id="senha" name="senha" <?php if( $regVal["senha"]=='' ){ ?>value=''<?php }else{ ?>value="<?php echo htmlspecialchars( $regVal["senha"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"<?php } ?> class="input-text" minlength=6>
+                        <input type="password" id="senha" name="senha" class="input-text" minlength=6>
                     </p>
                     <div class="clear"></div>
                     <p class="form-row"><input type="submit" value="Criar" name="login" class="button"></p>
